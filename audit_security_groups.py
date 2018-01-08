@@ -6,10 +6,12 @@ logging.basicConfig(stream=sys.stdout, format='%(asctime)s %(name)-12s %(levelna
 log = logging.getLogger(__name__)
 log.setLevel(logging.DEBUG)
 
+
 class filter_nvpair(dict):
 	def __init__(self, name, values):
 		self['Name'] = name
 		self['Values'] = values
+
 
 def handler(client):
 	ec2_client = client
@@ -34,6 +36,7 @@ def handler(client):
 		else:		
 			log.warning("Delete: \n{}".format(pprint.pformat(group)))
 
+
 def clients_in_regions(session, service_name, override_region=None):
 	regions = session.get_available_regions(service_name, partition_name='aws')
 
@@ -45,9 +48,9 @@ def clients_in_regions(session, service_name, override_region=None):
 		log.debug("Returning client in region {}".format(region))
 		yield client
 
+
 def main():
 
-	jobs = []
 	try:
 		profile_name = sys.argv[1]
 	except IndexError:
@@ -62,12 +65,5 @@ def main():
 		handler(client)
 
 
-
 if __name__ == "__main__":
 	main()
-
-
-
-
-
-
